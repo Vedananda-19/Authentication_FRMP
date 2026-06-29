@@ -1,15 +1,190 @@
-.backgroundDiv{
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+
+:root {
+  --color-brand:           #5b5bd6;
+  --color-brand-hover:     #4545b7;
+  --color-brand-subtle:    #e9e9ff;
+
+  --color-danger:          #be123c;
+
+  --color-page-bg:         #f6f7fb;
+  --color-surface:         #ffffff;
+  --color-border:          #e8e9f0;
+  --color-border-soft:     #d9dce6;
+  --color-border-inner:    #edf0f5;
+
+  --color-text-primary:    #202433;
+  --color-text-secondary:  #64748b;
+  --color-text-tertiary:   #475569;
+
+  --color-surface-hover:   #f7f7ff;
+
+  --shadow-card:    0 5px 18px rgba(49, 53, 82, 0.08);
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-page-bg);
+  color: var(--color-text-primary);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+
+input,
+textarea,
+select {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+}
+
+input::placeholder { color: var(--color-text-secondary); }
+
+/* ============================================================
+   AUTH PAGES
+   ============================================================ */
+
+.backgroundDiv {
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1.25rem;
 }
-.centerCard{
+
+.centerCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: .85rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-card);
+}
+
+.authForm { display: grid; gap: 1.25rem; }
+
+.authForm input {
+  width: 100%;
+  border: 1px solid var(--color-border-soft);
+  border-radius: .45rem;
+  padding: .65rem;
+  background: var(--color-surface);
+}
+
+.authForm input:focus {
+  outline: none;
+  border-color: var(--color-brand);
+}
+
+.authForm button[type="submit"] {
+  background: var(--color-brand);
+  color: var(--color-surface);
+  border: 0;
+  border-radius: .55rem;
+  padding: .75rem 1rem;
+  font-weight: 700;
+}
+
+.authForm button[type="submit"]:hover { background: var(--color-brand-hover); }
+.authForm button[type="submit"]:disabled { opacity: .65; cursor: not-allowed; }
+
+.formHeading { text-align: center; margin-bottom: .5rem; }
+.formHeading h1 { font-size: 1.8rem; margin-bottom: .35rem; color: var(--color-text-primary); }
+.formHeading p { color: var(--color-text-secondary); font-size: .95rem; }
+
+.fieldLabel {
+  display: grid;
+  gap: .4rem;
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--color-text-tertiary);
+}
+
+.errorMessage {
+  color: var(--color-danger);
+  font-size: .85rem;
+  margin-top: -.5rem;
+  text-align: center;
+}
+
+.authLink {
+  color: var(--color-brand);
+  text-decoration: none;
+  font-size: .9rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.authLink:hover { text-decoration: underline; }
+
+.authSecondaryButton {
+  border: 1px solid var(--color-border-soft);
+  border-radius: .55rem;
+  background: var(--color-surface);
+  color: var(--color-text-tertiary);
+  padding: .75rem 1rem;
+  font-weight: 700;
+}
+
+.authSecondaryButton:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-brand);
+  color: var(--color-brand-hover);
+}
+
+/* ============================================================
+   PROTECTED ROUTE / PAGE STATES
+   ============================================================ */
+
+.routeState {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: .5rem;
+  padding: 4rem 1.25rem;
+  min-height: 100vh;
 }
-.authForm{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+.routeState h3 { font-size: 1.5rem; color: var(--color-text-primary); }
+.routeState p { color: var(--color-text-secondary); margin-bottom: 1rem; }
+
+.primaryButton {
+  background: var(--color-brand);
+  color: var(--color-surface);
+  border: 0;
+  border-radius: .55rem;
+  padding: .7rem 1.25rem;
+  font-weight: 700;
+}
+
+.primaryButton:hover { background: var(--color-brand-hover); }
+
+.secondaryButton {
+  border: 1px solid var(--color-border-soft);
+  border-radius: .55rem;
+  background: var(--color-surface);
+  color: var(--color-text-tertiary);
+  padding: .7rem 1.25rem;
+  font-weight: 700;
+}
+
+.secondaryButton:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-brand);
+  color: var(--color-brand-hover);
 }

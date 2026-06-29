@@ -1,0 +1,26 @@
+import { useNavigate } from "react-router-dom"
+import useUser from "../hooks/useUser"
+import { queryClient } from "../main"
+
+function HomePage() {
+    const navigate = useNavigate()
+    const { data: user } = useUser()
+
+    const handleLogout = () => {
+        localStorage.removeItem("access_token")
+        queryClient.removeQueries({ queryKey: ["user"] })
+        navigate("/login")
+    }
+
+    return (
+        <div className="routeState">
+            <h3>Welcome{user?.username ? `, ${user.username}` : ""}</h3>
+            <p>You are signed in.</p>
+            <button className="secondaryButton" onClick={handleLogout}>
+                Logout
+            </button>
+        </div>
+    )
+}
+
+export default HomePage

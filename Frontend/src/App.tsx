@@ -1,20 +1,26 @@
-import {createBrowserRouter ,RouterProvider} from "react-router-dom"
-import HomePage from "../pages/HomePage"
-import LoginPage from "../pages/LoginPage"
-import RegisterPage from "../pages/RegisterPage"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import LoginPage from "./pages/LoginPage"
+import RegisterPage from "./pages/RegisterPage"
+import ProtectedRoute from "./layouts/ProtectedRoute"
 
 const router = createBrowserRouter([
     {
-      path:"/",
-      element:<HomePage />
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: "/",
+          element: <HomePage />
+        }
+      ]
     },
     {
-      path:"/login",
-      element:<LoginPage />
+      path: "/login",
+      element: <LoginPage />
     },
     {
-      path:"/register",
-      element:<RegisterPage />
+      path: "/register",
+      element: <RegisterPage />
     }
 ])
 
