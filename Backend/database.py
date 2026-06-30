@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
+from typing import Annotated
+from fastapi import Depends
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-# Connection setup only. Table models / queries live elsewhere (not implemented here).
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
@@ -18,3 +19,5 @@ def get_db():
         yield db
     finally:
         db.close()
+
+db_dependency = Annotated[Session,Depends(get_db)]

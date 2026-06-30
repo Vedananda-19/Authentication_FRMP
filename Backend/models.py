@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column,Integer,String,Boolean
+from sqlalchemy import Column,Integer,String,Boolean,ForeignKey
 from database import Base
+import uuid
 
 
 class RegisterModel(BaseModel):
@@ -11,11 +11,19 @@ class RegisterModel(BaseModel):
 
 
 class CurrentUser(BaseModel):
-    id: str
+    user_id: str
     username: str
 
-class UserModel(Base):
+class Users(Base):
     __tablename__="users"
-    id = Column(String,primary_key=True,default=lambda:str.uuid())
+
+    id = Column(String,primary_key=True,default=lambda:str(uuid.uuid4()))
     username = Column(String)
     password = Column(String)
+
+class RefreshTokens(Base):
+    __tablename__="refresh_tokens"
+
+    device = Column(String)
+    token = Column(String,primary_key=True)
+    user_id = Column(String,ForeignKey("users.id"))

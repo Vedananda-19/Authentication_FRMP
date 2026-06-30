@@ -32,12 +32,8 @@ function LoginPage() {
             setErrorMsg("");
             if (location.state?.from) navigate(location.state.from);
             else navigate("/");
-        } catch (error: unknown) {
-            const detail = axios.isAxiosError(error)
-                ? error.response?.data?.detail
-                : undefined;
-            const message =
-                typeof detail === "string" ? detail : "An error occurred";
+        } catch (error: any) {
+            const message = error.response?.data?.detail || "An error occurred";
             setErrorMsg(message);
         } finally {
             resetForm();

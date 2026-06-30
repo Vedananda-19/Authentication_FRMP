@@ -15,10 +15,16 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
         if (error.response?.status === 401) {
             localStorage.removeItem("access_token");
             queryClient.removeQueries({ queryKey: ["user"] });
+            if (error.response.detail === "Expired Token"){
+                const response = await api("/auth/refresh")
+                localStorage.setItem("access_token",JSON.stringify(response.data.access_token))
+                queryClient.invalidateQueries({queryKey:["user"]})
+                await api(error.config)
+            }
         }
         return Promise.reject(error);
     },
