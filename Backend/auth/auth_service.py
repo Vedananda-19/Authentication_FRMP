@@ -6,6 +6,8 @@ from passlib.context import CryptContext
 from datetime import datetime,timedelta,timezone
 from database import db_dependency
 from jose import jwt,JWTError,ExpiredSignatureError
+from google.oauth2 import id_token
+from google.auth.transport import requests
 from dotenv import load_dotenv
 import hashlib,hmac
 import os
@@ -15,6 +17,7 @@ OAuth2Scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 pwd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 ALGORITHM = "HS256"
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 def register_user(formData: RegisterModel, db: Session):
     if formData.password!=formData.confirmPassword:
@@ -25,7 +28,7 @@ def register_user(formData: RegisterModel, db: Session):
 
     hashed_password = pwd_context.hash(formData.password)
 
-    new_user = Users(username=formData.username,password=hashed_password)
+    new_user = Users(username=formData.username,password=hashed_password,auth_provider="local")
     db.add(new_user)
     db.commit()
 
@@ -119,3 +122,34 @@ def logout_user(refresh_token:str,db:Session,response:Response,device:str):
     except JWTError:
         pass
     return {"message":"Logged Out Successfully"}
+
+def create_google_user(db:Session,google_id:str,email:str,username:str):
+    usernames_set = set(get_usernames_list(db))
+    new_username = username
+    i=0
+    while new_username in usernames_set:
+        new_username = f"{username}{i}"
+        i+=1
+    new_user = Users(username=new_username,email=email,google_id=google_id,auth_provider="google")
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+
+def login_with_google(response:Response,google_token:str,db:Session,device:str):
+    try:
+        id_info = id_token.verify_oauth2_token(google_token,requests.Request(),GOOGLE_CLIENT_ID)
+    except ValueError:
+        raise HTTPException(401,"Invalid Google Token")
+    google_id = id_info["sub"]
+    email:str = id_info.get("email")
+    username = id_info.get("name") or email.split("@")[0]
+
+    user = db.query(Users).filter(Users.google_id==google_id).first()
+    if not user: 
+        user = create_google_user(db,google_id,email,username)
+        
+    new_refresh_token = create_refresh_token(user,db,device)
+    set_refresh_cookie(response,new_refresh_token)
+    return create_access_token(user)

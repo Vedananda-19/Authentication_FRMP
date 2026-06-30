@@ -10,6 +10,10 @@ class RegisterModel(BaseModel):
     confirmPassword: str
 
 
+class GoogleToken(BaseModel):
+    google_token: str
+
+
 class CurrentUser(BaseModel):
     user_id: str
     username: str
@@ -18,8 +22,11 @@ class Users(Base):
     __tablename__="users"
 
     id = Column(String,primary_key=True,default=lambda:str(uuid.uuid4()))
-    username = Column(String)
-    password = Column(String)
+    username = Column(String,unique=True)
+    password = Column(String,nullable=True)
+    google_id = Column(String,unique=True,nullable=True)
+    email = Column(String,unique=True,nullable=True)
+    auth_provider = Column(String)
 
 class RefreshTokens(Base):
     __tablename__="refresh_tokens"

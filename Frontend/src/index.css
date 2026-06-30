@@ -3,25 +3,25 @@
    ============================================================ */
 
 :root {
-  --color-brand:           #5b5bd6;
-  --color-brand-hover:     #4545b7;
-  --color-brand-subtle:    #e9e9ff;
+  --color-brand:           #7b7bff;
+  --color-brand-hover:     #9898ff;
+  --color-brand-subtle:    #2a2a4a;
 
-  --color-danger:          #be123c;
+  --color-danger:          #fb7185;
 
-  --color-page-bg:         #f6f7fb;
-  --color-surface:         #ffffff;
-  --color-border:          #e8e9f0;
-  --color-border-soft:     #d9dce6;
-  --color-border-inner:    #edf0f5;
+  --color-page-bg:         #111118;
+  --color-surface:         #1c1c27;
+  --color-border:          #2e2e3e;
+  --color-border-soft:     #3a3a4e;
+  --color-border-inner:    #2a2a3a;
 
-  --color-text-primary:    #202433;
-  --color-text-secondary:  #64748b;
-  --color-text-tertiary:   #475569;
+  --color-text-primary:    #e2e4f0;
+  --color-text-secondary:  #94a3b8;
+  --color-text-tertiary:   #a0aec0;
 
-  --color-surface-hover:   #f7f7ff;
+  --color-surface-hover:   #22223a;
 
-  --shadow-card:    0 5px 18px rgba(49, 53, 82, 0.08);
+  --shadow-card:    0 5px 18px rgba(0, 0, 0, 0.25);
 }
 
 /* ============================================================
@@ -144,6 +144,48 @@ input::placeholder { color: var(--color-text-secondary); }
   border-color: var(--color-brand);
   color: var(--color-brand-hover);
 }
+
+.authDivider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.25rem 0;
+  color: var(--color-text-secondary);
+  font-size: .85rem;
+}
+
+.authDivider::before,
+.authDivider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.authDivider span { padding: 0 .75rem; }
+
+.googleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  width: 100%;
+  border: 1px solid var(--color-border-soft);
+  border-radius: .55rem;
+  background: var(--color-surface);
+  color: var(--color-text-tertiary);
+  padding: .7rem 1rem;
+  font-weight: 600;
+  transition: background .15s, border-color .15s;
+}
+
+.googleButton:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-brand);
+}
+
+.googleButton:disabled { opacity: .65; cursor: not-allowed; }
+
+.googleIcon { width: 1.15rem; height: 1.15rem; }
 
 /* ============================================================
    PROTECTED ROUTE / PAGE STATES
