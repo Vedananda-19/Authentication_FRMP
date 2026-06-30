@@ -10,7 +10,7 @@ load_dotenv()
 
 Base.metadata.create_all(bind=engine)
 
-allowed_origins = ["http://localhost:5173"]
+allowed_origins = ["http://localhost:5173","http://authentication-frmp.vercel.app"]
 
 app = FastAPI()
 app.add_middleware(
