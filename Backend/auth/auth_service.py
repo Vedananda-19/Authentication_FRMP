@@ -59,7 +59,7 @@ def create_refresh_token(user:Users, db:Session, device:str):
     return token
 
 def set_refresh_cookie(response:Response, token:str):
-    response.set_cookie("refresh_token",token,httponly=True,samesite="lax",secure=False,path="/auth",max_age=30*24*60*60)
+    response.set_cookie("refresh_token",token,httponly=True,samesite="none",secure=True,path="/auth",max_age=30*24*60*60)#samesite none + secure for cross-site (vercel <-> railway)
 
 def verify_login(username:str, password:str, db:Session, response:Response, device:str):
     user = db.query(Users).filter(Users.username==username).first()
@@ -112,7 +112,7 @@ def refresh_expired_token(refresh_token:str,db:Session,response:Response,device:
     return create_access_token(user)
 
 def logout_user(refresh_token:str,db:Session,response:Response,device:str):
-    response.delete_cookie("refresh_token",path="/auth")
+    response.delete_cookie("refresh_token",path="/auth",samesite="none",secure=True)
     if not refresh_token:
         return {"message":"Logged Out Successfully"}
     try:
